@@ -1,0 +1,27 @@
+services:
+  db:
+    image: postgres:17
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: grpc-demo
+    ports:
+      - "5432:5432"
+
+  orders-service:
+    build:
+      context: ./orders
+      dockerfile: Dockerfile
+    ports:
+      - "50051:50051"
+    depends_on:
+      - db
+
+  inventory-service:
+    build:
+      context: ./inventory
+      dockerfile: Dockerfile
+    ports:
+      - "9090:9090"
+    depends_on:
+      - db
